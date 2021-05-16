@@ -9,29 +9,35 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
+    var viewModel = LoginViewModel()
+    @IBOutlet weak var txtEmail: BindingTextField?{
+        didSet{
+            self.txtEmail?.bind { self.viewModel.email.value = $0 }
+        }
+    }
+    
+    @IBOutlet weak var txtPassword: BindingTextField!{
+        didSet{
+            self.txtPassword.bind{
+                self.viewModel.password.value = $0  }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.viewTitle(value: "Login/Register")
         
         // Do any additional setup after loading the view.
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func loginOrSignup(_ sender: UIButton){
+        if viewModel.isValid{
+            print("Login signup success")
+            self.changeStoryboard(storyboard: "Main", storyboardId: "homeView")
+        }else{
+            print(viewModel.brokenRules)
+        }
     }
-    */
 
 }
 
-extension UIViewController{
-    func viewTitle(value title: String){
-        self.navigationItem.title = title
-    }
-}
+
